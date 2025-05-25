@@ -15,7 +15,7 @@
     }
 
     header {
-      background-color: #ff69b4; /* Pink */
+      background-color: #ff69b4;
       color: white;
       padding: 1rem;
       text-align: center;
@@ -25,7 +25,7 @@
     nav {
       display: flex;
       justify-content: center;
-      background-color: #ffa500; /* Orange */
+      background-color: #ffa500;
       padding: 1rem;
     }
 
@@ -35,14 +35,15 @@
       text-decoration: none;
       font-weight: bold;
     }
-    #home {
-      background-color: #fff0f5; /* Light pink background */
-      border-radius: 8px;
-    }
 
     section {
       padding: 2rem;
       animation: fadeInUp 1s;
+    }
+
+    #home {
+      background-color: #fff0f5;
+      border-radius: 8px;
     }
 
     .hampers {
@@ -65,7 +66,7 @@
     }
 
     .hamper button {
-      background-color: #87ceeb; /* Light Blue */
+      background-color: #87ceeb;
       border: none;
       padding: 0.5rem 1rem;
       color: white;
@@ -145,7 +146,7 @@
     </select>
     <div class="hampers">
       <div class="hamper">
-        <img src="images/IMG_1700.JPG" alt="Chocolate Delight">
+        <img src="https://via.placeholder.com/250x150?text=Chocolate+Delight" alt="Chocolate Delight">
         <h3>Chocolate Delight</h3>
         <p>A basket full of premium chocolates and sweets.</p>
         <p>R350</p>
@@ -158,14 +159,14 @@
         <p class="text-danger" id="stock-Chocolate Delight"></p>
       </div>
       <div class="hamper">
-        <img src="images/IMG_1701.JPG" alt="Wellness Pamper">
+        <img src="https://via.placeholder.com/250x150?text=Wellness+Pamper" alt="Wellness Pamper">
         <h3>Wellness Pamper</h3>
         <p>Spa goodies and relaxation essentials.</p>
         <p>R450</p>
         <button onclick="addToCart('Wellness Pamper', 450)">Add to Cart</button>
       </div>
       <div class="hamper">
-        <img src="images/IMG_1701.JPG" alt="Gourmet Treat">
+        <img src="https://via.placeholder.com/250x150?text=Gourmet+Treat" alt="Gourmet Treat">
         <h3>Gourmet Treat</h3>
         <p>Cheeses, crackers, and premium nibbles.</p>
         <p>R500</p>
@@ -177,7 +178,7 @@
       <h3>Your Cart</h3>
       <ul id="cart-items"></ul>
       <p id="total">Total: R0</p>
-      <button onclick="checkout()">Proceed to Checkout</button>
+      <button onclick="redirectToCheckout()">Proceed to Checkout</button>
     </div>
   </section>
 
@@ -239,10 +240,17 @@
       totalElem.textContent = `Total: R${total}`;
     }
 
-    function checkout() {
-      alert('Thank you for your order! Your hamper is on its way!');
-      cart.length = 0;
-      updateCart();
+    function redirectToCheckout() {
+      const location = document.getElementById('location').value;
+      const stock = stockData['Chocolate Delight'][location];
+      if (!stock) {
+        alert('Chocolate Delight is out of stock in your location. You will now be redirected to select a substitute before checking out.');
+        window.location.href = 'substitution-page.html';
+      } else {
+        alert('Thank you for your order! Your hamper is on its way!');
+        cart.length = 0;
+        updateCart();
+      }
     }
 
     function checkStock() {
@@ -259,6 +267,7 @@
 </body>
 
 </html>
+
 
 
 
