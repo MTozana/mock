@@ -83,10 +83,34 @@
     }
 
     #cart {
-      margin-top: 2rem;
-      background-color: #fff0f5;
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background-color: white;
       padding: 1rem;
       border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      z-index: 1001;
+      max-width: 300px;
+    }
+
+    .cart-icon {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #ffa500;
+      color: white;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 1001;
+      box-shadow: 0 0 8px rgba(0,0,0,0.3);
     }
 
     footer {
@@ -116,6 +140,78 @@
       from { opacity: 0; transform: translateY(-20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    @media (max-width: 600px) {
+  .hamper {
+    width: 100%;
+  }
+}
+#payment-section {
+  margin-top: 2rem;
+  background-color: #fff5f8;
+  padding: 1.5rem;
+  border-radius: 12px;
+  max-width: 400px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
+}
+
+#payment-section label {
+  font-weight: bold;
+  display: block;
+  margin-top: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.payment-icons {
+  margin: 1rem 0;
+}
+
+.payment-icons img {
+  margin-right: 8px;
+  height: 32px;
+  vertical-align: middle;
+}
+
+#payment-section input {
+  width: 100%;
+  padding: 0.7rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+#payment-section .row {
+  display: flex;
+  gap: 1rem;
+}
+
+#payment-section .col {
+  flex: 1;
+}
+
+#pay-btn {
+  background-color: #ff69b4;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+#pay-btn:hover {
+  background-color: #ff1493;
+}
+
+#payment-status {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
   </style>
 </head>
 
@@ -137,14 +233,14 @@
     <p>At Hampers of Love, we believe in the magic of giving. Whether it's a birthday, anniversary, or just because—gifting is an expression of love, appreciation, and joy. Our hampers are carefully curated to warm hearts and create lasting memories.</p>
   </section>
 
+ 
   <section id="hampers">
     <h2>Our Hampers</h2>
-    <label for="location">Select your location:</label>
-    <select id="location" class="form-select w-auto mb-3" onchange="checkStock()">
-      <option value="Johannesburg">Johannesburg</option>
-      <option value="Cape Town">Cape Town</option>
-      <option value="Durban">Durban</option>
-    </select>
+    <p id="geo-location" class="text-muted">Detecting your location...</p>
+    <div class="hampers">
+    </div>
+  </section>
+
     <div class="hampers">
       <div class="hamper">
         <img src="images/IMG_1700.JPG" alt="Chocolate Delight">
@@ -183,6 +279,23 @@
     </div>
   </section>
 
+  <section id="build">
+    <h2>Build Your Own Basket</h2>
+    <form onsubmit="event.preventDefault(); addToCartFromBuild();">
+      <div class="mb-3">
+        <label>Select Items:</label><br />
+        <input type="checkbox" value="Chocolates" data-price="120"> Chocolates (R120)<br>
+        <input type="checkbox" value="Wine" data-price="200"> Wine (R200)<br>
+        <input type="checkbox" value="Candles" data-price="100"> Candles (R100)<br>
+        <input type="checkbox" value="Snacks" data-price="80"> Snacks (R80)<br>
+      </div>
+      <button type="submit" class="btn btn-success">Add Basket to Cart</button>
+    </form>
+  </section>
+
+
+ 
+
   <section id="faq">
     <h2>Frequently Asked Questions</h2>
     <div class="faq">
@@ -190,7 +303,7 @@
       <p>Delivery typically takes 1–3 working days, depending on your location.</p>
 
       <h3>Can I customize a hamper?</h3>
-      <p>Absolutely! Reach out to us via the contact form to arrange custom orders.</p>
+      <p>Absolutely! You can build your own basket on the website.</p>
 
       <h3>Do you deliver on weekends?</h3>
       <p>We deliver Monday to Saturday. Sunday deliveries can be arranged for special occasions.</p>
@@ -199,6 +312,41 @@
       <p>We accept Visa, Mastercard, EFT, and most major payment platforms.</p>
     </div>
   </section>
+
+  <div id="payment-section">
+    <h3>Checkout</h3>
+  
+    <label for="full-name">Full Name</label>
+    <input type="text" id="full-name" placeholder="John Doe" />
+  
+    <label for="email">Email Address</label>
+    <input type="email" id="email" placeholder="john@example.com" />
+  
+    <div class="payment-icons">
+      <img src="https://img.icons8.com/color/48/visa.png" alt="Visa">
+      <img src="https://img.icons8.com/color/48/mastercard-logo.png" alt="Mastercard">
+      <img src="https://img.icons8.com/color/48/amex.png" alt="Amex">
+      <img src="https://img.icons8.com/color/48/discover.png" alt="Discover">
+    </div>
+  
+    <label for="card-number">Card Number</label>
+    <input type="text" id="card-number" placeholder="1234 5678 9012 3456" />
+  
+    <div class="row">
+      <div class="col">
+        <label for="expiry-date">Expiry (MM/YY)</label>
+        <input type="text" id="expiry-date" placeholder="MM/YY" />
+      </div>
+      <div class="col">
+        <label for="cvv">CVV</label>
+        <input type="text" id="cvv" placeholder="CVV" />
+      </div>
+    </div>
+  
+    <button id="pay-btn" onclick="processPayment()">Pay Now</button>
+    <p id="payment-status"></p>
+  </div>
+  
 
   <section id="contact">
     <h2>Contact Us</h2>
@@ -211,6 +359,14 @@
     <p>&copy; 2025 Hampers of Love. All rights reserved.</p>
   </footer>
 
+  <div class="cart-icon" onclick="toggleCart()">🛒</div>
+  <div id="cart">
+    <h4>Your Cart</h4>
+    <ul id="cart-items"></ul>
+    <p id="total">Total: R0</p>
+    <button onclick="redirectToCheckout()">Proceed to Checkout</button>
+  </div>
+
   <script>
     const stockData = {
       'Chocolate Delight': {
@@ -219,14 +375,10 @@
         'Durban': true
       }
     };
-
+  
     const cart = [];
-
-    function addToCart(item, price) {
-      cart.push({ item, price });
-      updateCart();
-    }
-
+    let userCity = 'Your Location'; // default
+  
     function updateCart() {
       const cartList = document.getElementById('cart-items');
       const totalElem = document.getElementById('total');
@@ -240,12 +392,37 @@
       });
       totalElem.textContent = `Total: R${total}`;
     }
-
+  
+    function addToCart(item, price) {
+      cart.push({ item, price });
+      updateCart();
+    }
+  
+    function addToCartFromBuild() {
+      const checkboxes = document.querySelectorAll('#build input[type="checkbox"]:checked');
+      let total = 0;
+      let items = [];
+      checkboxes.forEach(box => {
+        const name = box.value;
+        const price = parseInt(box.getAttribute('data-price'));
+        total += price;
+        items.push(name);
+      });
+      if (items.length) {
+        cart.push({ item: `Custom Basket: ${items.join(', ')}`, price: total });
+        updateCart();
+      }
+    }
+  
+    function toggleCart() {
+      const cartEl = document.getElementById('cart');
+      cartEl.style.display = cartEl.style.display === 'block' ? 'none' : 'block';
+    }
+  
     function redirectToCheckout() {
-      const location = document.getElementById('location').value;
-      const stock = stockData['Chocolate Delight'][location];
+      const stock = stockData['Chocolate Delight'][userCity];
       if (!stock) {
-        alert('Chocolate Delight is out of stock in your location. You will now be redirected to select a substitute before checking out.');
+        alert(`Chocolate Delight is out of stock in ${userCity}. You will now be redirected to select a substitute before checking out.`);
         window.location.href = 'substitution-page.html';
       } else {
         alert('Thank you for your order! Your hamper is on its way!');
@@ -253,18 +430,35 @@
         updateCart();
       }
     }
-
+  
     function checkStock() {
-      const location = document.getElementById('location').value;
-      const stock = stockData['Chocolate Delight'][location];
-      const stockMsg = document.getElementById('stock-Chocolate Delight');
-      if (!stock) {
-        stockMsg.textContent = `Not available in ${location}. Check Cape Town or Durban for availability.`;
-      } else {
-        stockMsg.textContent = `Available in ${location}`;
+      const stock = stockData['Chocolate Delight'][userCity];
+      const stockMsg = document.getElementById('stock-status');
+      if (stockMsg) {
+        if (!stock) {
+          stockMsg.textContent = `Not available in ${userCity}. Check Cape Town or Durban for availability.`;
+        } else {
+          stockMsg.textContent = `Available in ${userCity}`;
+        }
       }
     }
+  
+    window.onload = function () {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(pos => {
+          const { latitude, longitude } = pos.coords;
+          if (latitude < -25 && longitude > 28) userCity = 'Johannesburg';
+          else if (latitude < -33 && longitude > 18) userCity = 'Cape Town';
+          else if (latitude < -29 && longitude > 31) userCity = 'Durban';
+          document.getElementById('geo-location').textContent = `Detected Location: ${userCity}`;
+          checkStock();
+        }, () => {
+          document.getElementById('geo-location').textContent = 'Location detection failed.';
+        });
+      }
+    };
   </script>
+  
 </body>
 
 </html>
